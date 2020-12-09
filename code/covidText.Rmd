@@ -44,9 +44,10 @@ twitter_token <- create_token(
   access_secret = tSecret)
 
 
-rstats_tweets <- search_tweets("#korona", n = 500,
+rstats_tweets <- search_tweets("from:iDikic2", n = 500,
                              include_rts = FALSE,
-                             geocode = "45.81763,15.97613,50km")
+                            # geocode = "45.81763,15.97613,50km"
+                            )
 
 users <- search_users("#korona",
                       n = 500)
