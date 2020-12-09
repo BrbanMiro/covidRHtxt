@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(tidytext)
-library(webhoser)
 library(data.table)
 library(ggplot2)
 library(lubridate)
@@ -21,6 +20,7 @@ library(ggraph)
 library(widyr)
 library(topicmodels)
 library(ggthemes)
+library(rtweet)
 
 ```
 
@@ -29,6 +29,57 @@ library(ggthemes)
 
 ## Uvoz podataka
 
+
+
+```{r}
+
+
+source("../lozinke/twittercreds.R")
+
+twitter_token <- create_token(
+  app = app,
+  consumer_key = key,
+  consumer_secret = kSecret,
+  access_token = tkn,
+  access_secret = tSecret)
+
+
+rstats_tweets <- search_tweets("#korona", n = 500,
+                             include_rts = FALSE,
+                             geocode = "45.81763,15.97613,50km")
+
+users <- search_users("#korona",
+                      n = 500)
+```
+
+```{r}
+
+
+
+# Teeter API v2
+
+sampletweet <- httr::GET(url = 'https://api.twitter.com/2/tweets?ids=1278747501642657792',
+                         add_headers('authorization' = paste0('Bearer ',  bearer_token)))
+httr::content(sampletweet)
+
+# User lookup
+user_endpoint <- 'https://api.twitter.com/2/users/by/username/'
+username <- 'iDikic2'
+url <- paste0(user_endpoint, username)
+user <- httr::GET(
+  url,
+  add_headers('authorization' = paste0('Bearer ',  bearer_token)),
+  query = list(
+    expansions = 'pinned_tweet_id',
+    user.fields = "created_at,description",
+    tweet.fields = 'possibly_sensitive,text'
+    )  # add more options: https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-by-username-username
+  )
+results <- httr::content(user)
+results
+
+
+```
 
 
 ```{r PODATCI, message=F, warning=F}
@@ -102,7 +153,6 @@ stop_corpus <- my_stop_words %>%
 
 
 ```
-
 
 ```{r RIJECI, message=F, warning=F}
 
@@ -224,7 +274,6 @@ newsCOVID %>%
   
 
 ```
-
 
 ```{r SENTIMENT, message=F, warning=F}
 
@@ -371,7 +420,6 @@ newsCOVID_tokenTidy %>%
 
 ```
 
-
 ```{r FREKVENCIJA, message=F, warning=F}
 
 domenaWords <- newsCOVID %>%
@@ -420,7 +468,6 @@ idf %>%
 
 
 ```
-
 
 ```{r nGRAMI, message=F, warning=F}
 
@@ -536,8 +583,6 @@ corsWords %>%
   coord_flip()
 
 ```
-
-
 
 ```{r TEME, message=F, warning=F}
 
