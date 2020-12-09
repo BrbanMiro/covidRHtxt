@@ -43,7 +43,7 @@ library(ggthemes)
 
 # UČITAJ LEKSIKONE
 
-CroSentilex_n <- read.delim("C:/Users/msagovac/Dropbox/Mislav@Luka/crosentilex-negatives.txt",
+CroSentilex_n <- read.delim("../data/crosentilex-negatives.txt",
                                    header = FALSE,
                                    sep = " ",
                                    stringsAsFactors = FALSE,
@@ -51,7 +51,7 @@ CroSentilex_n <- read.delim("C:/Users/msagovac/Dropbox/Mislav@Luka/crosentilex-n
                    rename(word = "V1", sentiment = "V2" ) %>%
                    mutate(brija = "NEG")
  
- CroSentilex_p  <- read.delim("C:/Users/msagovac/Dropbox/Mislav@Luka/crosentilex-positives.txt",
+ CroSentilex_p  <- read.delim("../data/crosentilex-positives.txt",
                                    header = FALSE,
                                    sep = " ",
                                    stringsAsFactors = FALSE,
@@ -62,7 +62,7 @@ CroSentilex_n <- read.delim("C:/Users/msagovac/Dropbox/Mislav@Luka/crosentilex-n
  Crosentilex_sve <- rbind(setDT(CroSentilex_n), setDT(CroSentilex_p))
  
  
- CroSentilex_Gold  <- read.delim2("C:/Users/msagovac/Dropbox/Mislav@Luka/gs-sentiment-annotations.txt",
+ CroSentilex_Gold  <- read.delim2("../data/gs-sentiment-annotations.txt",
                                  header = FALSE,
                                  sep = " ",
                                  stringsAsFactors = FALSE) %>%
@@ -104,7 +104,7 @@ stop_corpus <- my_stop_words %>%
 ```
 
 
-```{r RIJEČI, message=F, warning=F}
+```{r RIJECI, message=F, warning=F}
 
 # UREDI ČLANKE
 
